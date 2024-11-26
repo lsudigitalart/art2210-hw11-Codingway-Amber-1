@@ -16,7 +16,7 @@ function preload() {
 function setup() {
   createCanvas(1080, 652);
   image(blk, 0, 0, 1080, 652)
-  background(wolf, 90);
+  background(wolf, 75);
   noStroke();
   // Convert the CSV into an array of objects with lat/long
   for (let i = 0; i < table.getRowCount(); i++) {
@@ -41,25 +41,22 @@ function setup() {
   console.log(churchData);
 
   for (let i = 0; i < churchData.length; i++) {
-    if(churchData[i].name.includes("BAPTIST")) {
     let x = map(churchData[i].longitude, minlon, maxlon, 0, width);
     let y = map(churchData[i].latitude, minlat, maxlat, 0, height);
-    fill(0, 255, 0, 100);
-    ellipse(x, y, 10, 10);
+  
+    if (churchData[i].name.includes("BAPTIST")) {
+      let col = color(0, 255, 0, 100);
+      cross(x, y, 12, 12, col);
     }
-    if(churchData[i].name.includes("METHODIST")) {
-      let x = map(churchData[i].longitude, minlon, maxlon, 0, width);
-      let y = map(churchData[i].latitude, minlat, maxlat, 0, height);
-      fill(255, 0, 0, 100);
-      ellipse(x, y, 10, 10);
-      }
-      if(churchData[i].name.includes("CENTER")) {
-        let x = map(churchData[i].longitude, minlon, maxlon, 0, width);
-        let y = map(churchData[i].latitude, minlat, maxlat, 0, height);
-        fill(0, 0, 255, 100);
-        ellipse(x, y, 10, 10);
-        }
-  }
+    if (churchData[i].name.includes("METHODIST")) {
+      let col = color(255, 0, 0, 100);
+      cross(x, y, 12, 12, col);
+    }
+    if (churchData[i].name.includes("CENTER")) {
+      let col = color(0, 0, 255, 100);
+      cross(x, y, 12, 12, col);
+    }
+  }  
 }
 
 // Function to parse the 'geom' column
@@ -77,4 +74,14 @@ function parseGeom(geom) {
     longitude: parseFloat(match[1]),
     latitude: parseFloat(match[2]),
   };
+}
+
+function cross(x, y, w, h, col) {
+  push();
+  translate(x, y); // Move to the specified coordinates
+  stroke(col); // Use the passed color for the cross
+  strokeWeight(3); // Adjust stroke weight if needed
+  line(-w / 2, 0, w / 2, 0); // Horizontal line
+  line(0, -h / 2, 0, h / 2); // Vertical line
+  pop();
 }
