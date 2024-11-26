@@ -4,14 +4,19 @@ let minlon = -91.22161341694176
 let maxlon = -91.00110703360933
 let table;
 let churchData = [];
+let wolf
+let blk
 
 function preload() {
   table = loadTable('churches.csv', 'csv', 'header');
+  wolf = loadImage("go-to-church.jpg");
+  blk = loadImage("church-bg.jpg")
 }
 
 function setup() {
-  createCanvas(800, 800);
-  background(0)
+  createCanvas(1080, 652);
+  image(blk, 0, 0, 1080, 652)
+  background(wolf, 90);
   noStroke();
   // Convert the CSV into an array of objects with lat/long
   for (let i = 0; i < table.getRowCount(); i++) {
@@ -35,7 +40,6 @@ function setup() {
   // Log the resulting object array to the console
   console.log(churchData);
 
-
   for (let i = 0; i < churchData.length; i++) {
     if(churchData[i].name.includes("BAPTIST")) {
     let x = map(churchData[i].longitude, minlon, maxlon, 0, width);
@@ -49,6 +53,12 @@ function setup() {
       fill(255, 0, 0, 100);
       ellipse(x, y, 10, 10);
       }
+      if(churchData[i].name.includes("CENTER")) {
+        let x = map(churchData[i].longitude, minlon, maxlon, 0, width);
+        let y = map(churchData[i].latitude, minlat, maxlat, 0, height);
+        fill(0, 0, 255, 100);
+        ellipse(x, y, 10, 10);
+        }
   }
 }
 
